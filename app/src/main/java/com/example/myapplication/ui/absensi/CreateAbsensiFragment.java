@@ -20,19 +20,14 @@ import com.example.myapplication.databinding.FragmentAbsensiBinding;
 import com.example.myapplication.models.DropdownItem;
 import com.example.myapplication.ui.slideshow.SlideshowViewModel;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import utils.ApiCallback;
 import utils.HttpClient;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -228,11 +223,12 @@ public class CreateAbsensiFragment extends Fragment {
 
 
             // Use HttpClient to send the request
-            HttpClient.getInstance().postRequest(API_URL, jsonObject, getContext(), new ApiCallback() {
+            HttpClient.getInstance().postRequest(API_URL, jsonObject, getContext(), new ApiCallback<JSONArray>() {
                 @Override
-                public void onSuccess(Response response) {
+                public void onSuccess(JSONArray response) {
                     getActivity().runOnUiThread(() -> {
                         Toast.makeText(getContext(), "Data Absensi berhasil dikirim", Toast.LENGTH_SHORT).show();
+//                        navigateToHomeFragment();
                     });
                 }
 

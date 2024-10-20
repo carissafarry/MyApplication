@@ -1,8 +1,6 @@
 package utils;
 
-import okhttp3.Response;
-
-public interface ApiCallback {
-    void onSuccess(Response response);
+public interface ApiCallback<T> {
+    void onSuccess(T response);
     void onFailure(String errorMessage);
 }
