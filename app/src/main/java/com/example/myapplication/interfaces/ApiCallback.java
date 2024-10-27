@@ -1,4 +1,4 @@
-package utils;
+package com.example.myapplication.interfaces;
 
 public interface ApiCallback<T> {
     void onSuccess(T response);
