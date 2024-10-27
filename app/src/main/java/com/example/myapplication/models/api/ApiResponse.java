@@ -1,5 +1,7 @@
 package com.example.myapplication.models.api;
 
+import com.example.myapplication.models.User;
+
 public class ApiResponse<T> {
     private String responseCode;
     private String responseDesc;
@@ -33,6 +35,13 @@ public class ApiResponse<T> {
     public String getToken() {
         if (responseData instanceof LoginResponse) {
             return ((LoginResponse) responseData).getToken();
+        }
+        return null;
+    }
+
+    public User getUser() {
+        if (responseData instanceof LoginResponse) {
+            return ((LoginResponse) responseData).getUser();
         }
         return null;
     }

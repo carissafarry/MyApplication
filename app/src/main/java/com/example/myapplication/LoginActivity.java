@@ -14,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 import com.example.myapplication.databinding.ActivityLoginBinding;
 import com.example.myapplication.interfaces.AuthApiService;
+import com.example.myapplication.models.User;
 import com.example.myapplication.models.api.ApiResponse;
 import com.example.myapplication.models.api.LoginRequest;
 import com.example.myapplication.models.api.LoginResponse;
@@ -63,16 +64,21 @@ public class LoginActivity extends AppCompatActivity {
 
                     if ("00".equals(apiResponse.getResponseCode())) {
                         String token = apiResponse.getResponseData().getToken();
+                        User logged_user = apiResponse.getResponseData().getUser();
 
                         // Store api token
                         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("api_token", token);
+                        editor.putString("username", logged_user.getUsername());
+                        editor.putString("role", logged_user.getRole());
                         editor.apply();
 
-                        // Redirect to MainActivity page
+                        // Redirect to MainActivity page with passing data
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("name", logged_user.getNama());
                         intent.putExtra("username", username);
+                        intent.putExtra("role", logged_user.getRole());
                         startActivity(intent);
                         finish();
                     } else {

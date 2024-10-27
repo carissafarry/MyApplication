@@ -1,9 +1,16 @@
 package com.example.myapplication;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.models.User;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -49,9 +56,25 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // Retrieve the username from the intent
+        // Retrieve the username and role from the intent
+        String name = getIntent().getStringExtra("name");
         String username = getIntent().getStringExtra("username");
-        if (username != null) {
+        String userRole = getIntent().getStringExtra("role");
+        if (userRole != null && username != null) {
+            Menu menu = navigationView.getMenu();
+            MenuItem createAbsensiItem = menu.findItem(R.id.nav_create_absensi);
+            createAbsensiItem.setVisible("guru".equals(userRole)); // set visibility based on role
+
+            // Find and update the User Data in the header
+            View headerLayout = navigationView.getHeaderView(0);
+            TextView navHeaderTitle = headerLayout.findViewById(R.id.headerTitle);
+            TextView navHeaderEmail = headerLayout.findViewById(R.id.headerEmail);
+
+            if (navHeaderTitle != null && navHeaderEmail != null) {
+                navHeaderTitle.setText(name != null ? name : "User");
+                navHeaderEmail.setText(username);
+            }
+
             Toast.makeText(this, "Welcome, " + username + "!", Toast.LENGTH_SHORT).show();
         }
     }

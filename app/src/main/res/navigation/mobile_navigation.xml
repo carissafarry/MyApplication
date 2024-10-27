@@ -35,14 +35,8 @@
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
-        android:id="@+id/nav_absensi"
+        android:id="@+id/nav_create_absensi"
         android:name="com.example.myapplication.ui.absensi.CreateAbsensiFragment"
         android:label="@string/menu_createabsensi"
         tools:layout="@layout/fragment_absensi" />
-
-<!--    <fragment-->
-<!--        android:id="@+id/nav_detailabsensi"-->
-<!--        android:name="com.example.myapplication.ui.absensi.DetailAbsensiFragment"-->
-<!--        android:label="Detail Absensi"-->
-<!--        tools:layout="@layout/fragment_absensi" />-->
 </navigation>
