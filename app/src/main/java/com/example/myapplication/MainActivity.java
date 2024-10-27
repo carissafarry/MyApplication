@@ -48,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        // Retrieve the username from the intent
+        String username = getIntent().getStringExtra("username");
+        if (username != null) {
+            Toast.makeText(this, "Welcome, " + username + "!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

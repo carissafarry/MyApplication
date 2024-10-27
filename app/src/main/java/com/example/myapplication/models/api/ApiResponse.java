@@ -29,4 +29,11 @@ public class ApiResponse<T> {
     public void setResponseData(T responseData) {
         this.responseData = responseData;
     }
+
+    public String getToken() {
+        if (responseData instanceof LoginResponse) {
+            return ((LoginResponse) responseData).getToken();
+        }
+        return null;
+    }
 }

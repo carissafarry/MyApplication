@@ -11,6 +11,9 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_createabsensi">Create Absensi</string>
+    <string name="login">Login</string>
+    <string name="password">Input password</string>
+    <string name="username">Input username</string>
 
     <!--  Absensi Fragment  -->
     <string-array name="absensi_types">

@@ -49,7 +49,7 @@ public class DetailAbsensiFragment extends Fragment {
         TextView textView = view.findViewById(R.id.textDetailNamaKelas);
 
         // Initialize API service
-        apiService = ApiClient.getClient().create(AbsensiApiService.class);
+        apiService = ApiClient.getClient(requireContext()).create(AbsensiApiService.class);
 
         String absensi_id = null;
         if (getArguments() != null) {

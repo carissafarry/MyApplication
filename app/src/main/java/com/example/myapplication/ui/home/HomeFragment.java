@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
         listView.setAdapter(absensiAdapter);
 
         // Initialize API service
-        apiService = ApiClient.getClient().create(AbsensiApiService.class);
+        apiService = ApiClient.getClient(requireContext()).create(AbsensiApiService.class);
 
         AbsensiRequest request = new AbsensiRequest();
         request.setSiswaId(2);
