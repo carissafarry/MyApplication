@@ -3,7 +3,7 @@ package com.example.myapplication.models;
 import java.util.Date;
 
 public class Absensi {
-    private String id_absensi;
+    private Integer id_absensi;
     private String kelas_id;
     private String nama_kelas;
     private String nama_guru;
@@ -12,6 +12,21 @@ public class Absensi {
     private String jam_mulai;
     private String jam_akhir;
     private int done;
+
+    public Absensi(Integer id_absensi, String nama_kelas, String nama_guru, String mata_pelajaran) {
+        this.id_absensi = id_absensi;
+        this.nama_kelas = nama_kelas;
+        this.nama_guru = nama_guru;
+        this.mata_pelajaran = mata_pelajaran;
+    }
+
+    public Integer getId() {
+        return id_absensi;
+    }
+
+    public void setId(Integer id_absensi) {
+        this.id_absensi = id_absensi;
+    }
 
     public String getNamaKelas() {
         return nama_kelas;
@@ -37,13 +52,13 @@ public class Absensi {
         this.mata_pelajaran = mata_pelajaran;
     }
 
-//    public String getJenjang() {
-//        return jenjang;
-//    }
-//
-//    public void setJenjang(String jenjang) {
-//        this.jenjang = jenjang;
-//    }
+    public String getJenjang() {
+        return jenjang;
+    }
+
+    public void setJenjang(String jenjang) {
+        this.jenjang = jenjang;
+    }
 
     public String getJamMulai() {
         return jam_mulai;
@@ -61,8 +76,8 @@ public class Absensi {
         this.jam_akhir = jam_akhir;
     }
 
-    public int getDone() {
-        return done;
+    public String getDone() {
+        return (done == 1 ? "Selesai" : "Tidak Tercatat");
     }
 
     public void setDone(int done) {
@@ -71,6 +86,6 @@ public class Absensi {
 
     @Override
     public String toString() {
-        return "Kelas: " + nama_kelas + "\nMata Pelajaran: " + mata_pelajaran + "\nJam: " + jam_mulai + " - " + jam_akhir + "\nStatus: " + (done == 1 ? "Selesai" : "Tidak Tercatat");
+        return "Id Absensi: " + id_absensi + "\nKelas: " + nama_kelas + "\nMata Pelajaran: " + mata_pelajaran + "\nJam: " + jam_mulai + " - " + jam_akhir + "\nStatus: " + (done == 1 ? "Selesai" : "Tidak Tercatat");
     }
 }

@@ -4,36 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.slideshow.CreateAbsensiFragment">
+    tools:context=".ui.absensi.CreateAbsensiFragment">
 
-
-    <!-- Name Field -->
-<!--    <EditText-->
-<!--        android:id="@+id/et_name"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Nama"-->
-<!--        android:inputType="text"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        tools:ignore="MissingConstraints" />-->
-
-<!--    &lt;!&ndash; Date Field &ndash;&gt;-->
-<!--    <EditText-->
-<!--        android:id="@+id/et_date"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Tanggal Absen"-->
-<!--        android:inputType="date"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/et_name"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
     <!-- Label for Kelas -->
     <TextView
@@ -47,7 +19,8 @@
         android:textAlignment="textStart"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <!-- Dropdown for Kelas -->
     <Spinner
@@ -115,33 +88,6 @@
         app:layout_constraintTop_toBottomOf="@+id/formabsensi_matapelajaran_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Label for Absensi -->
-<!--    <TextView-->
-<!--        android:id="@+id/formabsensi_absensi_label"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="25dp"-->
-<!--        android:layout_marginEnd="8dp"-->
-<!--        android:text="Pilih Tipe Absensi:"-->
-<!--        android:textAlignment="textStart"-->
-<!--        android:textSize="18sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/spinnerMataPelajaran"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
-    <!-- Dropdown for Absensi -->
-<!--    <Spinner-->
-<!--        android:id="@+id/spinnerAbsensiType"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/formabsensi_absensi_label"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
     <!-- Label for Jam Mulai -->
     <TextView

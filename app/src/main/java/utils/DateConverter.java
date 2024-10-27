@@ -6,16 +6,16 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DateConverter {
-    public static String convertDateFormat(String dateString) {
-        try {
-            // Define input format
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            // Parse the input date string
-            Date date = inputFormat.parse(dateString);
+    public static String formatDateTime(String dateTime) {
+        // Define the input and output date formats
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMMM yyyy, HH:mm 'WIB'", new Locale("id", "ID"));
 
-            // Define output format
-            SimpleDateFormat outputFormat = new SimpleDateFormat("HH.mm, dd MMM yyyy", Locale.forLanguageTag("id-ID")); // Locale for Indonesian
-            // Format the date to the desired output format
+        try {
+            // Parse the input date string into a Date object
+            Date date = inputFormat.parse(dateTime);
+
+            // Format the Date object into the desired output format
             return outputFormat.format(date);
         } catch (ParseException e) {
             e.printStackTrace();

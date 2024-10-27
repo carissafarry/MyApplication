@@ -10,104 +10,87 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.AbsensiAdapter2;
+import com.example.myapplication.databinding.FragmentHomeBinding;
+import com.example.myapplication.interfaces.AbsensiApiService;
 import com.example.myapplication.models.Absensi;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.List;
 
-import utils.ApiCallback;
-import utils.DateConverter;
-import utils.HttpClient;
+import com.example.myapplication.models.api.AbsensiRequest;
+import com.example.myapplication.models.api.ApiResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import utils.ApiClient;
 
 public class HomeFragment extends Fragment {
-
+    private FragmentHomeBinding binding;
     private ListView listView;
-    private ArrayList<Absensi> absensiList;
-    private ArrayAdapter<Absensi> absensiAdapter;
+    private List<Absensi> absensiList;
+    private AbsensiAdapter2 absensiAdapter;
+    private ArrayAdapter<String> adapter;
+    private AbsensiApiService apiService;
+
+    private static final String API_URL = "http://192.168.100.70:8000/absensi/getAll";
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        listView = view.findViewById(R.id.listViewAbsensi);
 
-        listView = root.findViewById(R.id.list_absensi);
+        // Example data
         absensiList = new ArrayList<>();
-        absensiAdapter = new ArrayAdapter<>(
-                getContext(),
-                R.layout.list_item_absensi,
-                R.id.textTanggalAbsensi,
-                absensiList
-        );
+        absensiAdapter = new AbsensiAdapter2(getContext(), absensiList);
         listView.setAdapter(absensiAdapter);
-        fetchAbsensiData();
 
-        return root;
+        // Initialize API service
+        apiService = ApiClient.getClient().create(AbsensiApiService.class);
+
+        AbsensiRequest request = new AbsensiRequest();
+        request.setSiswaId(2);
+        fetchDataFromApi(request);
+
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            Absensi absensiItem = absensiList.get(position);
+            onAbsensiItemClick(absensiItem);
+        });
+
+        return view;
     }
 
-    private void fetchAbsensiData() {
-        String url = "http://192.168.100.70:8000/absensi/getAll";
+    private void fetchDataFromApi(AbsensiRequest request) {
+        Call<ApiResponse<List<Absensi>>> call = apiService.getAbsensiAll(request);
 
-        // Create the request JSON object
-        JSONObject jsonObject = new JSONObject();
-        try {
-            // TODO
-//            jsonObject.put("id_guru", 1);
-            jsonObject.put("siswa_id", 2);
-        } catch (Exception e) {
-            showError("Error creating JSON: " + e.getMessage());
-            return;
-        }
-
-        HttpClient.getInstance().postRequest(url, jsonObject, getContext(), new ApiCallback<JSONArray>() {
+        call.enqueue(new Callback<ApiResponse<List<Absensi>>>() {
             @Override
-            public void onSuccess(JSONArray response) {
-                try {
-                    // Clear existing data
+            public void onResponse(Call<ApiResponse<List<Absensi>>> call, Response<ApiResponse<List<Absensi>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     absensiList.clear();
-
-                    // Parse the absensi data
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject absensiJson = response.getJSONObject(i);
-
-                        Absensi absensi = new Absensi();
-
-                        String jenjang = absensiJson.getString("jenjang");
-                        String nama_kelas = absensiJson.getString("nama_kelas");
-                        String kelas_id = absensiJson.getString("kelas_id");
-
-                        absensi.setNamaKelas(jenjang + " " + nama_kelas + " " + kelas_id);
-                        absensi.setMataPelajaran(absensiJson.getString("mata_pelajaran"));
-                        absensi.setDone(absensiJson.getInt("done"));
-
-                        // Convert to formatted string
-                        String jamMulai = absensiJson.getString("jamMulai");
-                        String jamAkhir = absensiJson.getString("jamAkhir");
-                        absensi.setJamMulai(DateConverter.convertDateFormat(jamMulai));
-                        absensi.setJamAkhir(DateConverter.convertDateFormat(jamAkhir));
-
-                        // Add the parsed Absensi object to the list
-                        absensiList.add(absensi);
-                    }
-
-                    // Update UI on the main thread
-                    requireActivity().runOnUiThread(() -> {
-                        absensiAdapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(), "Data Absensi Loaded", Toast.LENGTH_SHORT).show();
-                    });
-                } catch (Exception e) {
-                    showError("Error: " + e.getMessage());
+                    absensiList.addAll(response.body().getResponseData());
+                    absensiAdapter.notifyDataSetChanged();
+                } else {
+                    showError("Failed to fetch data");
                 }
             }
 
             @Override
-            public void onFailure(String errorMessage) {
-                showError("Error: " + errorMessage);
+            public void onFailure(Call<ApiResponse<List<Absensi>>> call, Throwable t) {
+                showError("Error: " + t.getMessage());
             }
         });
+    }
+
+    private void onAbsensiItemClick(Absensi absensiItem) {
+        Bundle bundle = new Bundle();
+        bundle.putString("absensi_id", String.valueOf(absensiItem.getId()));
+        NavHostFragment.findNavController(HomeFragment.this)
+                .navigate(R.id.action_absensiList_to_detailAbsensiFragment, bundle);
     }
 
     private void showError(String message) {

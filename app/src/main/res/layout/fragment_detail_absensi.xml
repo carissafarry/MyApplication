@@ -3,37 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".ui.home.HomeFragment">
+    android:layout_height="match_parent"
+    tools:context=".ui.absensi.DetailAbsensiFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="5dp"
+        android:padding="16dp"
         tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/text_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textTanggalAbsensi"
+            android:id="@+id/textDetailNamaKelas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/textMataPelajaran"
+            android:id="@+id/textDetailMataPelajaran"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/textStatus"
+            android:id="@+id/textDetailJamMulai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/textDetailJamAkhir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/textDetailStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

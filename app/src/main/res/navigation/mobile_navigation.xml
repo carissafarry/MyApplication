@@ -9,7 +9,18 @@
         android:id="@+id/nav_home"
         android:name="com.example.myapplication.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/list_item_absensi" />
+        tools:layout="@layout/list_item_absensi">
+
+        <action
+            android:id="@+id/action_absensiList_to_detailAbsensiFragment"
+            app:destination="@id/detailAbsensiFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailAbsensiFragment"
+        android:name="com.example.myapplication.ui.absensi.DetailAbsensiFragment"
+        android:label="Detail Absensi"
+        tools:layout="@layout/fragment_detail_absensi" />
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -26,6 +37,12 @@
     <fragment
         android:id="@+id/nav_absensi"
         android:name="com.example.myapplication.ui.absensi.CreateAbsensiFragment"
-        android:label="@string/menu_absensi"
+        android:label="@string/menu_createabsensi"
         tools:layout="@layout/fragment_absensi" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/nav_detailabsensi"-->
+<!--        android:name="com.example.myapplication.ui.absensi.DetailAbsensiFragment"-->
+<!--        android:label="Detail Absensi"-->
+<!--        tools:layout="@layout/fragment_absensi" />-->
 </navigation>

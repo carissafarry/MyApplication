@@ -20,13 +20,10 @@ import com.example.myapplication.databinding.FragmentAbsensiBinding;
 import com.example.myapplication.models.DropdownItem;
 import com.example.myapplication.ui.slideshow.SlideshowViewModel;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import utils.ApiCallback;
-import utils.HttpClient;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -145,39 +142,6 @@ public class CreateAbsensiFragment extends Fragment {
             }
         });
 
-        // Initialize spinner spinnerAbsensiType
-//        Spinner spinnerAbsensiType = binding.spinnerAbsensiType;
-//
-//        ArrayList<DropdownItem> absensiItems = new ArrayList<>();
-//        absensiItems.add(new DropdownItem("Buka", "1"));
-//        absensiItems.add(new DropdownItem("Tutup", "2"));
-//
-////        ArrayAdapter<CharSequence> adapterAbsensi = ArrayAdapter.createFromResource(getContext(),
-////                R.array.absensi_types, android.R.layout.simple_spinner_item);
-//        ArrayAdapter<DropdownItem> adapterAbsensi = new ArrayAdapter<>(
-//                getContext(),
-//                android.R.layout.simple_spinner_item,
-//                absensiItems
-//        );
-//        adapterAbsensi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerAbsensiType.setAdapter(adapterAbsensi);
-//
-//        // Spinner spinnerAbsensiType selection handling
-//        spinnerAbsensiType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                DropdownItem selectedItem = (DropdownItem) parent.getItemAtPosition(position);
-//                selectedAbsensiType = selectedItem.getValue();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                selectedAbsensiType = null;
-//            }
-//        });
-
-        // Input Time jamMulai dan jamAkhir
-
         // Initialize time input fields
         jamMulai = binding.etJamMulai;
         jamAkhir = binding.etJamAkhir;
@@ -195,6 +159,20 @@ public class CreateAbsensiFragment extends Fragment {
         // Handle form submission
         binding.submitButton.setOnClickListener(v -> {
             if (selectedKelas != null && selectedGuru != null && selectedMatpel != null) {
+                try {
+                    // Build JSON object
+                    JSONObject getAbsensiParams = new JSONObject();
+                    getAbsensiParams.put("kelas_id", selectedKelas);
+                    getAbsensiParams.put("guru_id", selectedGuru);
+                    getAbsensiParams.put("mapel_id", selectedMatpel);
+
+                    // How to save the response
+
+//                    postRequest(getAbsensiParams, "Berhasil mendapatkan data Absensi");
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Error creating JSON: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
                 sendAbsensiData();
             } else {
                 Toast.makeText(getContext(), "Please select an absensi type: " + selectedKelas + selectedGuru + selectedMatpel, Toast.LENGTH_SHORT).show();
@@ -223,26 +201,30 @@ public class CreateAbsensiFragment extends Fragment {
 
 
             // Use HttpClient to send the request
-            HttpClient.getInstance().postRequest(API_URL, jsonObject, getContext(), new ApiCallback<JSONArray>() {
-                @Override
-                public void onSuccess(JSONArray response) {
-                    getActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "Data Absensi berhasil dikirim", Toast.LENGTH_SHORT).show();
-//                        navigateToHomeFragment();
-                    });
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    getActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
-                    });
-                }
-            });
+//            postRequest(jsonObject, "Data Absensi berhasil dikirim");
         } catch (Exception e) {
             Toast.makeText(getContext(), "Error creating JSON: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+//    private void postRequest(JSONObject jsonObject, String successMessage) {
+//        HttpClient.getInstance().postRequest(API_URL, jsonObject, getContext(), new ApiCallback<Object>() {
+//            @Override
+//            public void onSuccess(Object response) {
+//                getActivity().runOnUiThread(() -> {
+//                    Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
+//                    // Optionally navigate to another fragment or update the UI further here
+//                });
+//            }
+//
+//            @Override
+//            public void onFailure(String errorMessage) {
+//                getActivity().runOnUiThread(() -> {
+//                    Toast.makeText(getContext(), "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+//                });
+//            }
+//        });
+//    }
 
     private void showTimePickerDialog(EditText timeField) {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
