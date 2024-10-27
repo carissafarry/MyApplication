@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.absensi;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +16,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.myapplication.R;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.databinding.FragmentAbsensiBinding;
+import com.example.myapplication.interfaces.AbsensiApiService;
 import com.example.myapplication.models.DropdownItem;
+import com.example.myapplication.models.api.AbsensiRequest;
+import com.example.myapplication.models.api.ApiResponse;
 import com.example.myapplication.ui.slideshow.SlideshowViewModel;
 
-import org.json.JSONObject;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import utils.ApiClient;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +36,6 @@ import java.util.Locale;
 
 public class CreateAbsensiFragment extends Fragment {
     private FragmentAbsensiBinding binding;
-//    private String selectedAbsensiType;
     private String selectedKelas;
     private String selectedGuru;
     private String selectedMatpel;
@@ -41,8 +44,8 @@ public class CreateAbsensiFragment extends Fragment {
     private EditText jamMulai, jamAkhir;
 
     private static final String API_URL = "http://192.168.100.70:8000/absensi/create";
-    private OkHttpClient client = new OkHttpClient();
-    private MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    private AbsensiApiService absensiApiService;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class CreateAbsensiFragment extends Fragment {
 
         binding = FragmentAbsensiBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        absensiApiService = ApiClient.getClient(requireContext()).create(AbsensiApiService.class);
 
         // Initialize spinner spinnerKelasType
         Spinner spinnerKelasType = binding.spinnerKelasType;
@@ -159,20 +164,6 @@ public class CreateAbsensiFragment extends Fragment {
         // Handle form submission
         binding.submitButton.setOnClickListener(v -> {
             if (selectedKelas != null && selectedGuru != null && selectedMatpel != null) {
-                try {
-                    // Build JSON object
-                    JSONObject getAbsensiParams = new JSONObject();
-                    getAbsensiParams.put("kelas_id", selectedKelas);
-                    getAbsensiParams.put("guru_id", selectedGuru);
-                    getAbsensiParams.put("mapel_id", selectedMatpel);
-
-                    // How to save the response
-
-//                    postRequest(getAbsensiParams, "Berhasil mendapatkan data Absensi");
-                } catch (Exception e) {
-                    Toast.makeText(getContext(), "Error creating JSON: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
                 sendAbsensiData();
             } else {
                 Toast.makeText(getContext(), "Please select an absensi type: " + selectedKelas + selectedGuru + selectedMatpel, Toast.LENGTH_SHORT).show();
@@ -183,48 +174,37 @@ public class CreateAbsensiFragment extends Fragment {
     }
 
     private void sendAbsensiData() {
-        EditText textJamMulai = (EditText) getView().findViewById(R.id.et_jam_mulai);
-        EditText textJamAkhir = (EditText) getView().findViewById(R.id.et_jam_akhir);
+        String jamMulaiText = jamMulai.getText().toString();
+        String jamAkhirText = jamAkhir.getText().toString();
 
-        // Gather data from inputs
-        String jamMulai = textJamMulai.getText().toString();
-        String jamAkhir = textJamAkhir.getText().toString();
+        AbsensiRequest request = new AbsensiRequest();
+        request.setKelasId(Integer.valueOf(selectedKelas));
+        request.setIdGuru(Integer.valueOf(selectedGuru));
+        request.setMapelId(Integer.valueOf(selectedMatpel));
+        request.setJamMulai(jamMulaiText);
+        request.setJamAkhir(jamAkhirText);
 
-        try {
-            // Build JSON object
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("kelas_id", selectedKelas);
-            jsonObject.put("guru_id", selectedGuru);
-            jsonObject.put("mapel_id", selectedMatpel);
-            jsonObject.put("jamMulai", jamMulai);
-            jsonObject.put("jamAkhir", jamAkhir);
+        Call<ApiResponse<Void>> call = absensiApiService.createAbsensi(request);
+        call.enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null && "00".equals(response.body().getResponseCode())) {
+                    Toast.makeText(getContext(), "Absensi created successfully", Toast.LENGTH_SHORT).show();
 
+                    // Navigate to HomeActivity
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getContext(), "Failed to create absensi", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-            // Use HttpClient to send the request
-//            postRequest(jsonObject, "Data Absensi berhasil dikirim");
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "Error creating JSON: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
-//    private void postRequest(JSONObject jsonObject, String successMessage) {
-//        HttpClient.getInstance().postRequest(API_URL, jsonObject, getContext(), new ApiCallback<Object>() {
-//            @Override
-//            public void onSuccess(Object response) {
-//                getActivity().runOnUiThread(() -> {
-//                    Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
-//                    // Optionally navigate to another fragment or update the UI further here
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(String errorMessage) {
-//                getActivity().runOnUiThread(() -> {
-//                    Toast.makeText(getContext(), "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
-//                });
-//            }
-//        });
-//    }
 
     private void showTimePickerDialog(EditText timeField) {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);

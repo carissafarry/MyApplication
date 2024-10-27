@@ -13,32 +13,56 @@
         android:padding="16dp"
         tools:ignore="MissingConstraints">
 
+<!--        &lt;!&ndash; RecyclerView to display the list of students who attended &ndash;&gt;-->
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recyclerViewSiswaHadir"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"/>-->
 
-        <TextView
-            android:id="@+id/textDetailNamaKelas"
-            android:layout_width="wrap_content"
+        <TableLayout
+            android:id="@+id/tableLayoutDetailAbsensi"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"/>
+            android:layout_marginBottom="30dp"
+            android:stretchColumns="1">
+        </TableLayout>
 
-        <TextView
-            android:id="@+id/textDetailMataPelajaran"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <!-- TableLayout to display the list of students who attended -->
+        <TableLayout
+            android:id="@+id/tableLayoutSiswaHadir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stretchColumns="1">
 
-        <TextView
-            android:id="@+id/textDetailJamMulai"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <!-- Header Row -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textDetailJamAkhir"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="No"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textDetailStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Nama Siswa"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Kehadiran"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

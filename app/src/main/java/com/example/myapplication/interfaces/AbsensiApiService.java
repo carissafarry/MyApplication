@@ -16,4 +16,7 @@ public interface AbsensiApiService {
 
     @POST("/absensi/getAbsensi")
     Call<ApiResponse<Absensi>> getAbsensiDetail(@Body AbsensiRequest request);
+
+    @POST("/absensi/create")
+    Call<ApiResponse<Void>> createAbsensi(@Body AbsensiRequest request);
 }

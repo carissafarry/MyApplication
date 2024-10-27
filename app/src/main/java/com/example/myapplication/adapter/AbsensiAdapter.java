@@ -70,11 +70,11 @@ public class AbsensiAdapter extends RecyclerView.Adapter<AbsensiAdapter.AbsensiV
 
         public AbsensiViewHolder(@NonNull View itemView) {
             super(itemView);
-            kelasTextView = itemView.findViewById(R.id.textDetailNamaKelas);
-            matpelTextView = itemView.findViewById(R.id.textDetailMataPelajaran);
-            jamMulaiTextView = itemView.findViewById(R.id.textDetailJamMulai);
-            jamAkhirTextView = itemView.findViewById(R.id.textDetailJamAkhir);
-            statusTextView = itemView.findViewById(R.id.textDetailStatus);
+//            kelasTextView = itemView.findViewById(R.id.textDetailNamaKelas);
+//            matpelTextView = itemView.findViewById(R.id.textDetailMataPelajaran);
+//            jamMulaiTextView = itemView.findViewById(R.id.textDetailJamMulai);
+//            jamAkhirTextView = itemView.findViewById(R.id.textDetailJamAkhir);
+//            statusTextView = itemView.findViewById(R.id.textDetailStatus);
         }
 
         public void bind(Absensi Absensi, OnItemClickListener onItemClickListener) {

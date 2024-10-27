@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Absensi {
     private Integer id_absensi;
+    private Integer guru_id;
     private String kelas_id;
     private String nama_kelas;
     private String nama_guru;
