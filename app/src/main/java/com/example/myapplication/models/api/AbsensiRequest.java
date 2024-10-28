@@ -8,6 +8,7 @@ public class AbsensiRequest {
     private Integer mapel_id;
     private String jam_mulai;
     private String jam_akhir;
+    private String code;
 
     // Getter and Setter
     public String getAbsensiId() {
@@ -16,6 +17,14 @@ public class AbsensiRequest {
 
     public void setAbsensiId(String id_absensi) {
         this.id_absensi = id_absensi;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public void setSiswaId(Integer siswa_id) {

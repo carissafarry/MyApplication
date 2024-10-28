@@ -13,5 +13,10 @@
             android:id="@+id/nav_create_absensi"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_createabsensi" />
+
+        <item
+            android:id="@+id/nav_qr_scanner"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Scan QR Absensi" />
     </group>
 </menu>

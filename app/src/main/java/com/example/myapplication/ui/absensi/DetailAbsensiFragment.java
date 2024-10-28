@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -14,13 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.SiswaHadirAdapter;
 import com.example.myapplication.databinding.FragmentDetailAbsensiBinding;
 import com.example.myapplication.interfaces.AbsensiApiService;
 import com.example.myapplication.interfaces.AbsensiSiswaApiService;
 import com.example.myapplication.models.Absensi;
-
 
 import java.io.Serializable;
 import java.util.List;
@@ -45,6 +46,7 @@ public class DetailAbsensiFragment extends Fragment {
 //    private SiswaHadirAdapter siswaHadirAdapter;
     private TableLayout tableLayoutSiswaHadir;
     private TableLayout tableLayoutDetailAbsensi;
+    private ImageView qrCodeImage;
 
     private static final String API_DETAIL_URL = "http://192.168.100.70:8000/absensi/detail"; // Replace with your API URL
 
@@ -73,12 +75,23 @@ public class DetailAbsensiFragment extends Fragment {
 
         String absensi_id = null;
         if (getArguments() != null) {
+            qrCodeImage = view.findViewById(R.id.qrCodeImage);
             absensi_id = getArguments().getString("absensi_id");
             fetchAbsensiDetail(absensi_id);
             fetchDataAbsensi(absensi_id);
         }
 
         return view;
+    }
+
+    private void loadQRCodeImage(Absensi absensi) {
+        // Replace with the path to your QR code image
+        String imagePath = "file:///android_asset/" + absensi.getMataPelajaran().toLowerCase()  + ".png"; // or a URL if it's hosted online
+
+        // Use Glide to load the image
+        Glide.with(this)
+                .load(imagePath)
+                .into(qrCodeImage);
     }
 
     private void fetchAbsensiDetail(String id) {
@@ -90,16 +103,11 @@ public class DetailAbsensiFragment extends Fragment {
             @Override
             public void onResponse(Call<ApiResponse<Absensi>> call, Response<ApiResponse<Absensi>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Absensi detail = response.body().getResponseData();
+                    absensi = response.body().getResponseData();
 
-                    if (detail != null) {
-                        populateTableDetailAbsensi(detail);
-//                        String displayText = "ID Absensi: " + detail.getId() + "\n" +
-//                                "Kelas: " + detail.getNamaKelas() + "\n" +
-//                                "Mata Pelajaran: " + detail.getMataPelajaran() + "\n" +
-//                                "Jam Mulai: " + formattedJamMulai + "\n" +
-//                                "Jam Akhir: " + formattedJamAkhir + "\n";
-//                        textView.setText(displayText);
+                    if (absensi != null) {
+                        loadQRCodeImage(absensi);
+                        populateTableDetailAbsensi(absensi);
                     }
                 } else {
                     Log.e("DetailAbsensiFragment-fetchAbsensiDetail", "Request failed: " + response.message());
